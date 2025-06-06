@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Task 1: Image in Marquee</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #fff;
+        }
+        
+        marquee {
+            margin-top: 30px;
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        img {
+            height: 150px;
+            margin: 0 10px;
+        }
+  </style>
+</head>
+<body>
+    
+  <h2>Image in Marquee</h2>
+  <p>
+    The marquee HTML element is used to insert a scrolling area of text. You can control what happens when the text reaches the edges of its content area using its attributes.<br>The HTML marquee element is deprecated and its use is strongly discouraged. If you must create the effect of scrolling text or continuous elements, consider using CSS animations with CSS transforms instead of marquee elements to smoothly animate content. Additionally, include the prefers-reduced-motion CSS @media query to stop the animation based on user preference, thereby improving user experience and accessibility.
+  </p>
+
+  <marquee behavior="scroll" direction="left" scrollamount="6">
+    <img src="books.jpeg" alt="Image">
+    <img src="books.jpeg" alt="Image">
+    <img src="books.jpeg" alt="Image">
+    <img src="books.jpeg" alt="Image">
+    <img src="books.jpeg" alt="Image">
+    <img src="books.jpeg" alt="Image">
+  </marquee>
+</body>
+</html>
