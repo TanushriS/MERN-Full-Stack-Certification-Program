@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Task1: 8x8 Checkerboard</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+  }
+  .checkerboard {
+    display: grid;
+    grid-template-columns: repeat(8, 50px);
+    grid-template-rows: repeat(8, 50px);
+    border: 2px solid #333;
+  }
+  .square {
+    width: 50px;
+    height: 50px;
+  }
+  .square.black {
+    background-color: black;
+  }
+  .square.white {
+    background-color: white;
+  }
+</style>
+</head>
+<body>
+  <div class="checkerboard">
+    <div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div>
+    <div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div>
+    <div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div>
+    <div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div>
+    <div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div>
+    <div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div>
+    <div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div>
+    <div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div><div class="square black"></div><div class="square white"></div>
+  </div>
+</body>
+</html>
