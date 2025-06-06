@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Age Calculator</title>
+  <style>
+    body {
+      text-align: center;
+      background: #a855f7;
+      color: white;
+      font-family: Arial;
+      padding: 100px;
+    }
+
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    .output {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .output div {
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>AGE CALCULATOR</h1>
+  <input type="date" id="dob">
+  <button onclick="calculateAge()">Calculator</button>
+
+  <div class="output">
+    <div><span id="years">00</span><br>YEAR</div>
+    <div><span id="months">00</span><br>MONTH</div>
+    <div><span id="days">00</span><br>DAY</div>
+  </div>
+
+  <script>
+    function calculateAge() {
+      const dob = new Date(document.getElementById('dob').value);
+      const today = new Date();
+
+      let years = today.getFullYear() - dob.getFullYear();
+      let months = today.getMonth() - dob.getMonth();
+      let days = today.getDate() - dob.getDate();
+
+      if (days < 0) {
+        months--;
+        days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      document.getElementById('years').innerText = years;
+      document.getElementById('months').innerText = months;
+      document.getElementById('days').innerText = days;
+    }
+  </script>
+</body>
+</html>
