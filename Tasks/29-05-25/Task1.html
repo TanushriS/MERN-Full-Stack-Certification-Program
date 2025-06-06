@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Window</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d') no-repeat center center fixed;
+      background-size: cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-box {
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 30px;
+      width: 300px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .login-box img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .login-box h2 {
+      margin-bottom: 20px;
+      font-weight: normal;
+    }
+
+    .login-box input[type="text"],
+    .login-box input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-bottom: 1px solid #fff;
+      background: transparent;
+      color: white;
+      outline: none;
+    }
+
+    .login-box label {
+      display: block;
+      text-align: left;
+      font-size: 13px;
+      margin: 10px 0 5px;
+    }
+
+    .login-box a {
+      color: #0f9d58;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .login-box input[type="checkbox"] {
+      margin-right: 5px;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 10px;
+      background: green;
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 15px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .login-box button:hover {
+      background: #0b7d38;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="user">
+    <h2>LOGIN WINDOW</h2>
+    
+    <form>
+      <input type="text" placeholder="Your Email Address" required>
+      <input type="password" placeholder="Your Password" required>
+      
+      <label>
+        <input type="checkbox" required>
+        Agree With <a href="#">Terms & Condition</a>
+      </label>
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</body>
+</html>
