@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Countdown Timer</title>
+  <style>
+    body {
+      text-align: center;
+      padding: 50px;
+      font-family: Arial, sans-serif;
+      background-color: #e8f0fe;
+    }
+
+    h1 {
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .start { background-color: #2ecc71; color: white; }
+    .stop { background-color: #e74c3c; color: white; }
+    .reset { background-color: #f1c40f; color: black; }
+  </style>
+</head>
+<body>
+
+  <h2>TIMER</h2>
+  <h1 id="timer">25 : 00</h1>
+
+  <button class="start" onclick="startTimer()">START</button>
+  <button class="stop" onclick="stopTimer()">STOP</button>
+  <button class="reset" onclick="resetTimer()">RESET</button>
+
+  <script>
+    let timerInterval;
+    let timeLeft = 25 * 60;
+
+    function updateDisplay() {
+      const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+      const seconds = (timeLeft % 60).toString().padStart(2, '0');
+      document.getElementById("timer").textContent = `${minutes} : ${seconds}`;
+    }
+
+    function startTimer() {
+      if (!timerInterval) {
+        timerInterval = setInterval(() => {
+          if (timeLeft > 0) {
+            timeLeft--;
+            updateDisplay();
+          } else {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            alert("Time's up!");
+          }
+        }, 1000);
+      }
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function resetTimer() {
+      stopTimer();
+      timeLeft = 25 * 60;
+      updateDisplay();
+    }
+
+    updateDisplay();
+  </script>
+
+</body>
+</html>
