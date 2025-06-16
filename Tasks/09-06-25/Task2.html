@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather App</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #b8e0d2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #a6d6c3;
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      width: 600px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .weather-info {
+      font-size: 48px;
+      font-weight: 300;
+      margin-bottom: 10px;
+    }
+
+    .location {
+      font-size: 32px;
+    }
+
+    .time-day {
+      font-size: 20px;
+      margin-top: 10px;
+    }
+
+    .desc {
+      font-size: 18px;
+      color: #444;
+    }
+
+    .search-area {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      width: 150px;
+    }
+
+    button {
+      background-color: #da90f3;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #c675e4;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Weather App</h1>
+    <div class="weather-info" id="temp">--</div>
+    <div class="location" id="city">--</div>
+    <div class="time-day" id="time">--</div>
+    <div class="desc" id="desc">--</div>
+
+    <div class="search-area">
+      <input type="text" id="searchInput" placeholder="Enter city">
+      <button onclick="getWeather()">Search Button</button>
+    </div>
+  </div>
+
+  <script>
+    const apiKey = 'YOUR_API_KEY'; // Replace with your actual OpenWeatherMap API key
+
+    function updateTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+      document.getElementById("time").textContent = `${hours}:${minutes} ${day}`;
+    }
+
+    function getWeather() {
+      const city = document.getElementById("searchInput").value.trim();
+      if (city === "") return;
+
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("City not found");
+          }
+          return response.json();
+        })
+        .then(data => {
+          document.getElementById("temp").textContent = Math.round(data.main.temp) + "°C";
+          document.getElementById("city").textContent = data.name;
+          document.getElementById("desc").textContent = data.weather[0].description;
+          updateTime();
+        })
+        .catch(error => {
+          alert(error.message);
+        });
+    }
+
+    updateTime(); // Set initial time
+  </script>
+
+</body>
+</html>

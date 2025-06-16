@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Real Time Clock</title>
+</head>
+<body>
+
+  <p id="timeDisplay"></p>
+  <button onclick="startClock()">Click me</button>
+  <button onclick="stopClock()">stop</button>
+
+  <script>
+    let timer;
+
+    function startClock() {
+      if (!timer) {
+        timer = setInterval(() => {
+          const now = new Date();
+          document.getElementById("timeDisplay").textContent = now.toString();
+        }, 1000);
+      }
+    }
+
+    function stopClock() {
+      clearInterval(timer);
+      timer = null;
+    }
+  </script>
+
+</body>
+</html>
