@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlickFinder - Movie Discovery & Reviews</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #111827;
+            color: white;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #374151;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #14b8a6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #14b8a6;
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #581c87 0%, #1e3a8a 50%, #134e4a 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-1 {
+            top: 80px;
+            left: 40px;
+            width: 16px;
+            height: 16px;
+            background: #fbbf24;
+            animation-delay: 0s;
+        }
+
+        .floating-2 {
+            top: 160px;
+            right: 80px;
+            width: 24px;
+            height: 24px;
+            background: #ec4899;
+            animation-delay: 1s;
+        }
+
+        .floating-3 {
+            bottom: 160px;
+            left: 80px;
+            width: 12px;
+            height: 12px;
+            background: #60a5fa;
+            animation-delay: 2s;
+        }
+
+        .floating-4 {
+            bottom: 80px;
+            right: 40px;
+            width: 20px;
+            height: 20px;
+            background: #34d399;
+            animation-delay: 0.5s;
+        }
+
+        .movie-reel {
+            position: absolute;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            animation: spin 20s linear infinite;
+        }
+
+        .reel-1 {
+            top: 25%;
+            left: 25%;
+            width: 128px;
+            height: 128px;
+        }
+
+        .reel-2 {
+            bottom: 25%;
+            right: 25%;
+            width: 96px;
+            height: 96px;
+            border-color: rgba(20, 184, 166, 0.3);
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(20, 184, 166, 0.2);
+            color: #14b8a6;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, white, #14b8a6, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #d1d5db;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #14b8a6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0d9488;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #14b8a6;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #9ca3af;
+        }
+
+        /* Movie Grid */
+        .section {
+            padding: 4rem 0;
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .movie-card {
+            background: #1f2937;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #374151;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .movie-card:hover {
+            border-color: #14b8a6;
+            transform: translateY(-5px);
+        }
+
+        .movie-poster {
+            aspect-ratio: 3/4;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .movie-poster::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+        }
+
+        .movie-info {
+            padding: 1rem;
+        }
+
+        .movie-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            line-height: 1.3;
+        }
+
+        .movie-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #fbbf24;
+        }
+
+        .heart-btn {
+            background: none;
+            border: none;
+            color: #14b8a6;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 1rem;
+        }
+
+        /* Cinema Festival */
+        .cinema-festival {
+            background: linear-gradient(135deg, #ea580c, #dc2626);
+            border-radius: 20px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .festival-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .festival-text h2 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .festival-text .cinema {
+            color: #fbbf24;
+        }
+
+        .popcorn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popcorn-box {
+            width: 120px;
+            height: 120px;
+            background: #dc2626;
+            border-radius: 12px;
+            transform: rotate(12deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .popcorn-inner {
+            width: 80px;
+            height: 100px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        /* Movie List */
+        .movie-list-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .movie-list-title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #14b8a6;
+            font-family: cursive;
+            margin-bottom: 2rem;
+        }
+
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .category-btn {
+            padding: 8px 16px;
+            border: 2px solid #14b8a6;
+            background: transparent;
+            color: #14b8a6;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-btn:hover {
+            background: #14b8a6;
+            color: black;
+        }
+
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 3rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 50px 12px 50px;
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 25px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .search-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .mic-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            cursor: pointer;
+        }
+
+        /* FAQ */
+        .faq-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #14b8a6;
+            font-family: cursive;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .faq-item {
+            background: #1f2937;
+            border-radius: 12px;
+            border: 1px solid #374151;
+            margin-bottom: 1rem;
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 1.5rem;
+            background: none;
+            border: none;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            color: #14b8a6;
+            display: none;
+        }
+
+        .faq-answer.active {
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            background: #111827;
+            border-top: 1px solid #374151;
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #14b8a6;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .newsletter-input {
+            width: 100%;
+            padding: 10px;
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            color: #9ca3af;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: white;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .festival-content {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #374151;
+            background: #1f2937;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .page-btn.active {
+            background: #14b8a6;
+            color: black;
+            border-color: #14b8a6;
+        }
+
+        .page-btn:hover {
+            border-color: #14b8a6;
+        }
+
+        /* Loading placeholder for images */
+        .movie-poster.loading {
+            background: linear-gradient(45deg, #374151, #4b5563, #374151);
+            background-size: 200% 200%;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% -200%; }
+            100% { background-position: 200% 200%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">Flick<span style="color: white;">Finder</span></a>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#tv-show">TV Show</a></li>
+                    <li><a href="#movie">Movie</a></li>
+                    <li><a href="#upcoming">Upcoming</a></li>
+                </ul>
+                <button class="mobile-menu">☰</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="floating-element floating-1"></div>
+        <div class="floating-element floating-2"></div>
+        <div class="floating-element floating-3"></div>
+        <div class="floating-element floating-4"></div>
+        
+        <div class="movie-reel reel-1"></div>
+        <div class="movie-reel reel-2"></div>
+
+        <div class="hero-content">
+            <div class="hero-badge">
+                ⭐ #1 Movie Discovery Platform
+            </div>
+            <h1 class="hero-title">Bringing the Big Screen to Your Screen</h1>
+            <p class="hero-subtitle">
+                Discover, critique, and celebrate movies with honest reviews and fresh takes on every film. Join millions of movie lovers worldwide.
+            </p>
+            <div class="hero-buttons">
+                <a href="#movies" class="btn btn-primary">▶ Discover Movies</a>
+                <a href="#trailer" class="btn btn-outline">Watch Trailer</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Movies</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">1M+</div>
+                    <div class="stat-label">Reviews</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">100K+</div>
+                    <div class="stat-label">Users</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Movie Grid -->
+    <section class="section" id="movies">
+        <div class="container">
+            <div class="movie-grid">
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Avengers: Endgame</h3>
+                        <div class="movie-meta">
+                            <span>Type: movie</span>
+                            <div class="rating">⭐ 8.4</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">Release: 2019</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/pThyQovXQrw2m0s9x82twj48Jq4.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Spider-Man: No Way Home</h3>
+                        <div class="movie-meta">
+                            <span>Type: movie</span>
+                            <div class="rating">⭐ 8.2</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">Release: 2021</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/rktDFPbfHfUbArZ6OOOKsXcv0Bm.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Top Gun: Maverick</h3>
+                        <div class="movie-meta">
+                            <span>Type: movie</span>
+                            <div class="rating">⭐ 8.3</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">Release: 2022</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Spider-Man: Into the Spider-Verse</h3>
+                        <div class="movie-meta">
+                            <span>Type: movie</span>
+                            <div class="rating">⭐ 8.4</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">Release: 2018</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Parasite</h3>
+                        <div class="movie-meta">
+                            <span>Type: movie</span>
+                            <div class="rating">⭐ 8.5</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">Release: 2019</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/uozb2VeD87YmhoUP1RrGWfzuCrr.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Everything Everywhere All at Once</h3>
+                        <div class="movie-meta">
+                            <span>Type: movie</span>
+                            <div class="rating">⭐ 7.8</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">Release: 2022</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/qAZ0pzat24kLdO3o8ejmbLxyOac.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Interstellar</h3>
+                        <div class="movie-meta">
+                            <span>Type: movie</span>
+                            <div class="rating">⭐ 8.6</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">Release: 2014</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">The Dark Knight</h3>
+                        <div class="movie-meta">
+                            <span>Type: movie</span>
+                            <div class="rating">⭐ 9.0</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">Release: 2008</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">The Shawshank Redemption</h3>
+                        <div class="movie-meta">
+                            <span>Type: movie</span>
+                            <div class="rating">⭐ 9.3</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">Release: 1994</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">The Godfather</h3>
+                        <div class="movie-meta">
+                            <span>Type: movie</span>
+                            <div class="rating">⭐ 9.2</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">Release: 1972</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <button class="btn btn-outline">Show more...</button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">4</button>
+                <button class="page-btn">5</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinema Festival -->
+    <section class="section">
+        <div class="container">
+            <div class="cinema-festival">
+                <div class="festival-content">
+                    <div class="festival-text">
+                        <h2 class="cinema">CINEMA</h2>
+                        <h2>FESTIVAL</h2>
+                    </div>
+                    <div class="popcorn-container">
+                        <div class="popcorn-box">
+                            <div class="popcorn-inner">🍿</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Movie List -->
+    <section class="section" id="movie">
+        <div class="container">
+            <div class="movie-list-header">
+                <h2 class="movie-list-title">MOVIE LIST</h2>
+                
+                <div class="categories">
+                    <button class="category-btn">All Movies</button>
+                    <button class="category-btn">Marvel Movie</button>
+                    <button class="category-btn">Funny Movie</button>
+                    <button class="category-btn">Animation Movie</button>
+                    <button class="category-btn">Web Series Movie</button>
+                    <button class="category-btn">Horror Movie</button>
+                    <button class="category-btn">Romance Movie</button>
+                    <button class="category-btn">Action Movie</button>
+                </div>
+
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="Search here">
+                    <span class="mic-icon">🎤</span>
+                </div>
+            </div>
+
+            <div class="movie-grid">
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Avengers: Infinity War</h3>
+                        <div class="movie-meta">
+                            <span>Action/Sci-Fi</span>
+                            <div class="rating">⭐ 8.4</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2018 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Captain America: Civil War</h3>
+                        <div class="movie-meta">
+                            <span>Action</span>
+                            <div class="rating">⭐ 7.8</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2016 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/q2PG9dwxfzMwdyKQk7KxUbmSiPC.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Toy Story 4</h3>
+                        <div class="movie-meta">
+                            <span>Animation</span>
+                            <div class="rating">⭐ 7.7</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2019 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/6CoRTJTmijhBLJTUNoVSUNxZMEI.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Joker</h3>
+                        <div class="movie-meta">
+                            <span>Drama</span>
+                            <div class="rating">⭐ 8.4</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2019 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">It</h3>
+                        <div class="movie-meta">
+                            <span>Horror</span>
+                            <div class="rating">⭐ 7.3</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2017 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/kqjL17yufvn9OVLyXYpvtyrFfak.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Mad Max: Fury Road</h3>
+                        <div class="movie-meta">
+                            <span>Action</span>
+                            <div class="rating">⭐ 8.1</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2015 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/lmZFxXgJE3vgrciwuDib0N8CfQo.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Guardians of the Galaxy</h3>
+                        <div class="movie-meta">
+                            <span>Action/Comedy</span>
+                            <div class="rating">⭐ 8.0</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2014 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Inception</h3>
+                        <div class="movie-meta">
+                            <span>Sci-Fi</span>
+                            <div class="rating">⭐ 8.8</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2010 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/cezWGskPY5x7GaglTTRN4Fugfb8.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">The Matrix</h3>
+                        <div class="movie-meta">
+                            <span>Sci-Fi</span>
+                            <div class="rating">⭐ 8.7</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">1999 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/9O7gLzmreU0nGkIB6K3BsJbzvNv.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Pulp Fiction</h3>
+                        <div class="movie-meta">
+                            <span>Crime</span>
+                            <div class="rating">⭐ 8.9</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">1994 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/f4aul3FyD3jv3v4bul1IrkWZvzq.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">La La Land</h3>
+                        <div class="movie-meta">
+                            <span>Romance/Musical</span>
+                            <div class="rating">⭐ 8.0</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2016 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/vfrQk5IPloGg1v9Rzbh2Eg3VGyM.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Tenet</h3>
+                        <div class="movie-meta">
+                            <span>Sci-Fi/Action</span>
+                            <div class="rating">⭐ 7.4</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2020 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">John Wick</h3>
+                        <div class="movie-meta">
+                            <span>Action</span>
+                            <div class="rating">⭐ 7.4</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2014 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Interstellar</h3>
+                        <div class="movie-meta">
+                            <span>Sci-Fi/Drama</span>
+                            <div class="rating">⭐ 8.6</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2014 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/dqK9Hag1054tghRQSqLSfrkvQnA.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Casino Royale</h3>
+                        <div class="movie-meta">
+                            <span>Action/Thriller</span>
+                            <div class="rating">⭐ 8.0</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2006 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <div class="movie-poster" style="background-image: url('https://image.tmdb.org/t/p/w500/lFSSLTlFozwpaGlO31OoUeirBgQ.jpg')"></div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">The Lord of the Rings: The Return of the King</h3>
+                        <div class="movie-meta">
+                            <span>Fantasy/Adventure</span>
+                            <div class="rating">⭐ 8.9</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #9ca3af;">2003 • movie</span>
+                            <button class="heart-btn">♡</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section">
+        <div class="container">
+            <h2 class="faq-title">FREQUENTLY ASKED QUESTIONS</h2>
+            
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(1)">
+                    1. What is this website about?
+                    <span id="icon-1">+</span>
+                </button>
+                <div class="faq-answer" id="answer-1">
+                    This website provides in-depth reviews, ratings, and analysis of movies from different genres, release periods, and countries. You'll find user-submitted reviews, critic opinions, and recommendations for all types of films.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(2)">
+                    2. How are movies rated?
+                    <span id="icon-2">+</span>
+                </button>
+                <div class="faq-answer" id="answer-2">
+                    Movies are rated using a comprehensive system that combines user ratings, critic scores, and algorithmic analysis of various factors including plot, acting, cinematography, and overall entertainment value.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(3)">
+                    3. Can I submit my own reviews?
+                    <span id="icon-3">+</span>
+                </button>
+                <div class="faq-answer" id="answer-3">
+                    Yes! Registered users can submit their own movie reviews, rate films, and participate in discussions. Your reviews help other users discover great movies and avoid disappointing ones.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(4)">
+                    4. Is the content on this website free?
+                    <span id="icon-4">+</span>
+                </button>
+                <div class="faq-answer" id="answer-4">
+                    Most of our content is completely free to access. Premium features like advanced filtering, personalized recommendations, and ad-free browsing are available with a subscription.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(5)">
+                    5. How do I search for a specific movie?
+                    <span id="icon-5">+</span>
+                </button>
+                <div class="faq-answer" id="answer-5">
+                    Use the search bar at the top of any page to find specific movies. You can search by title, actor, director, genre, or release year. Advanced filters help narrow down results.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>FlickFinder</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Contact us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Products</h3>
+                    <ul>
+                        <li><a href="#">TV Show</a></li>
+                        <li><a href="#">Web Series</a></li>
+                        <li><a href="#">Hollywood</a></li>
+                        <li><a href="#">Bollywood</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Search Movie</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <input type="email" class="newsletter-input" placeholder="mail@example.com">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #9ca3af; margin-bottom: 1rem;">
+                        <input type="checkbox" style="margin: 0;">
+                        I agree with <a href="#" style="color: #14b8a6;">Privacy Policy</a> and <a href="#" style="color: #14b8a6;">Terms of Condition</a>
+                    </label>
+                    <button class="btn btn-primary" style="width: 100%;">Send</button>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="social-links">
+                    <a href="#">📘</a>
+                    <a href="#">📷</a>
+                    <a href="#">🐦</a>
+                    <a href="#">📺</a>
+                </div>
+                <p style="color: #9ca3af; font-size: 0.9rem;">
+                    ©FlickFinder 2024. All rights reserved. Developed by <a href="#" style="color: #14b8a6;">Shabham Mishra</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Toggle Function
+        function toggleFAQ(id) {
+            const answer = document.getElementById(`answer-${id}`);
+            const icon = document.getElementById(`icon-${id}`);
+            
+            if (answer.classList.contains('active')) {
+                answer.classList.remove('active');
+                icon.textContent = '+';
+            } else {
+                // Close all other FAQs
+                for (let i = 1; i <= 5; i++) {
+                    document.getElementById(`answer-${i}`).classList.remove('active');
+                    document.getElementById(`icon-${i}`).textContent = '+';
+                }
+                // Open current FAQ
+                answer.classList.add('active');
+                icon.textContent = '−';
+            }
+        }
+
+        // Open first FAQ by default
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleFAQ(1);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Heart button toggle
+        document.querySelectorAll('.heart-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.textContent = this.textContent === '♡' : '♥' : '♡';
+                this.style.color = this.textContent === '♥' ? '#dc2626' : '#14b8a6';
+            });
+        });
+
+        // Category button active state
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality
+        document.querySelector('.search-input').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const movieCards = document.querySelectorAll('.movie-card');
+            
+            movieCards.forEach(card => {
+                const title = card.querySelector('.movie-title').textContent.toLowerCase();
+                const genre = card.querySelector('.movie-meta span').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || genre.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = searchTerm === '' ? 'block' : 'none';
+                }
+            });
+        });
+
+        // Image loading error handling
+        document.querySelectorAll('.movie-poster').forEach(poster => {
+            const img = new Image();
+            const bgImage = poster.style.backgroundImage;
+            
+            if (bgImage) {
+                const url = bgImage.slice(4, -1).replace(/"/g, "");
+                img.onload = function() {
+                    poster.classList.remove('loading');
+                };
+                img.onerror = function() {
+                    poster.style.backgroundImage = 'linear-gradient(135deg, #374151, #4b5563)';
+                    poster.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #9ca3af; font-size: 3rem;">🎬</div>';
+                };
+                img.src = url;
+            }
+        });
+    </script>
+</body>
+</html>
