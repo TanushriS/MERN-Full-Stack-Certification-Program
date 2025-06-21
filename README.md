@@ -36,6 +36,7 @@ The certification program covers the following key technologies:
 ```
 MERN-Full-Stack-Certification-Program/
 ├── Tasks/                 # Coding assignments and exercises
+    └──Date wise assignments
 └── resources/             # Additional learning resources
 ```
 
@@ -55,7 +56,7 @@ Upon successful completion of the program, participants receive the **MERN Full 
 
 ## How to Use This Repository
 
-1. Clone the repository: `git clone [repository-url]`
+1. Clone the repository: `git clone [https://github.com/TanushriS/MERN-Full-Stack-Certification-Program/tree/main]`
 2. Navigate to specific project folders to view code
 3. Install dependencies for each project with `npm install`
 4. Run projects according to their individual README instructions
