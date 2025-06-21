@@ -1,7 +1,5 @@
 # MERN-Full-Stack-Certification-Program
 
-# MERN Full Stack Certification Program by Ethnus
-
 ## Program Overview
 
 This repository contains my work, projects, and learning materials from the **MERN Full Stack Certification Program** offered by **Ethnus**. The program provides comprehensive training in full-stack web development using the MERN stack (MongoDB, Express.js, React.js, and Node.js).
